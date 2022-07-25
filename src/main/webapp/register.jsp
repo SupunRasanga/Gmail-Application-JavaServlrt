@@ -3,7 +3,7 @@
     
     import ="com.controller.RegisterServlet"
     import ="com.service.Services"
-    
+	import = "com.dto.UserDTO"
     
     %>
 
@@ -22,134 +22,196 @@
     <title>Register</title>
 </head>
 <body>
+	<% UserDTO ud = new UserDTO(); %>
     <div class="container">
         <div class="row">
             <div class="col-1"></div>
-            <div class="col-8">
+            <div class="col-10">
                 <div class="card mag">
-                    <div class="row mt-4 ml-5">
+                   <div class="container">
+                    <div class="row mt-5">
                         <div class="col  text-primary">
                             <h5>Google</h5>
                         </div>   
                     </div>
-                    <div class="row ml-5">
+                    <div class="row">
                         <div class="col ">
                             <h4>Create Your Google Account</h4>
                         </div>   
                     </div>
-                    <div class="row ml-5 mt-1">
+                    <div class="row mt-1">
                         <div class="col text-secondary">
                             <h6>to continue to Gmail</h6>
                         </div>   
                     </div>
                     <div class="row mt-3">
-                        <div class="col-1"></div>
-                        <div class="col-10">
+                       
+                        <div class="col-12">
                             <form action="register" method="post">
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="First Name" name="fName" required>
+                                            <input type="text" class="form-control" placeholder="First Name" name="fName" 
+                                            value="<% if(request.getAttribute("fName") != null){ out.println(request.getAttribute("fName")); }%>" required>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="Last Name" name="lName" required>
+                                            <input type="text" class="form-control" placeholder="Last Name" name="lName" 
+                                            value="<% if(request.getAttribute("lName") != null){ out.println(request.getAttribute("lName")); }%>" required>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <input type="email" class="form-control" placeholder="Username@gmail.com" name="email" pattern="[^@]+@[^@]+\.[a-zA-Z]{2,6}">
+                                
+                                <div class="row">
+                                	<div class="col-6">
+	                                	<div class="form-group has-validation">
+	                                		<div class="input-group">
+			                                    
+			                                    
+			                                     <%
+								            		if(request.getAttribute("emailS") != null){
+								            		%>
+									         		<!-- status model starts here -->
+									         		<input type="text" class="form-control is-invalid" placeholder="User Name" name="email" required>
+									         		<div class="input-group-append">
+													<div class="input-group-text">@gmail.com</div>
+													</div>
+													<div class="invalid-feedback">
+												     <% out.print(request.getAttribute("emailS")); %>
+												    </div>
+													<!-- status model ends here -->
+													<%
+								            			}else{
+													%>
+													<!-- status model starts here -->
+									         		<input type="text" class="form-control" 
+									         		value="<% if(request.getAttribute("emailC") != null){ out.println(request.getAttribute("emailC")); }%>" placeholder="User Name" name="email" required>	
+									         		<div class="input-group-append">
+													<div class="input-group-text">@gmail.com</div>
+													</div>							
+													<!-- status model ends here -->
+													
+													<% }
+				                                %>
+
+											</div>
+	                                	</div>
+                                	</div>
+                                	
+                                	<div class="col-6">
+                                		<div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Date Of Birth" name="dob" onfocus="(this.type='date')" id="date" 
+                                            value="<% if(request.getAttribute("dob") != null){ out.println(request.getAttribute("dob")); }%>"  required>
+                                        </div>
+                                	</div>
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-4">
-                                        <div class="form-group">
-                                            <input type="number" class="form-control" placeholder="Enter Birth Year" name="dYear" value="dob" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-4">
-                                        <div class="form-group">
-                                            <select class="form-control" name="dMonth" required>
-                                                <option selected disabled>Select Month</option>
-                                                <option>January</option>
-                                                <option>February</option>
-                                                <option>March</option>
-                                                <option>April</option>
-                                                <option>May</option>
-                                                <option>June</option>
-                                                <option>July</option>
-                                                <option>August</option>
-                                                <option>Septemfa-border</option>
-                                                <option>October</option>
-                                                <option>November</option>
-                                                <option>December</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-4">
-                                        <div class="form-group">
-                                            <input type="number" class="form-control" placeholder="Enter Date" name="dDay" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
                                     <div class="col-6">
-                                        <div class="form-group mb-4">
-                                            <select class="form-control" name="gender" required>
+                                        <div class="form-group mb-4 has-validation">
+                                        	 <%
+							            		if(request.getAttribute("genderS") != null){
+							            		%>
+                                            <select class="form-control is-invalid" name="gender" required>
                                                 <option selected disabled>Select Gender</option>
                                                 <option>Male</option>
                                                 <option>Female</option>
                                                 <option>Other</option>
-                                            </select>
+                                            </select> 
+                                            <div class="invalid-feedback">
+											     <% out.print(request.getAttribute("genderS")); %>
+											    </div>
+												<!-- status model ends here -->
+												<%
+							            			}else{
+												%>
+												<select class="form-control" name="gender" required>
+                                                <option selected disabled>Select Gender</option>
+                                                <option>Male</option>
+                                                <option>Female</option>
+                                                <option>Other</option>
+                                            </select> 
+                                            <%
+	            		}
+					%>
                                         </div> 
                                     </div>
                                     <div class="col-6">
                                         <div class="form-group mb-4">
-                                           <input type="number" class="form-control" placeholder="Contact Number" name="conNo" required> 
+                                           <input type="text" class="form-control" placeholder="Contact Number" name="conNo" 
+                                           value="<% if(request.getAttribute("conNo") != null){ out.println(request.getAttribute("conNo")); }%>" required > 
                                         </div> 
                                     </div>
                                     
                                 </div>
                                 <div class="row">
                                     <div class="col-6">
-                                        <div class="form-group">
-                                            <input type="password" class="form-control" placeholder="Password" name="pass" required>
+                                        <div class="form-group has-validation">
+                                            
+                                            <%
+							            		if(request.getAttribute("password") != null){
+							            		%>
+								         		<!-- status model starts here -->
+								         		<input type="password" class="form-control is-invalid" placeholder="Password" name="pass" required>
+												<div class="invalid-feedback">
+											     <% out.print(request.getAttribute("password")); %>
+											    </div>
+												<!-- status model ends here -->
+												<%
+							            			}else{
+												%>
+												<!-- status model starts here -->
+								         		<input type="password" class="form-control" placeholder="Password" name="pass" value="<% if(request.getAttribute("passwordC") != null){ out.println(request.getAttribute("passwordC")); }%>" required>
+												<!-- status model ends here -->
+									
+										<% } %>
+                                            
+                                            
+                                            
                                         </div>
                                     </div>
                                     <div class="col-6">
-                                        <div class="form-group">
-                                            <input type="password" class="form-control" placeholder="Confirm Password" name="comPass" required>
-                                        </div>
+                                        <div class="form-group has-validation">
+
+                                          <%
+							            		if(request.getAttribute("password") != null){
+							            		%>
+								         		<!-- status model starts here -->
+								         		<input type="password" class="form-control is-invalid" placeholder="Confirm Password" name="comPass" required>
+												<div class="invalid-feedback">
+											     <% out.print(request.getAttribute("password")); %>
+											    </div>
+												<!-- status model ends here -->
+												<%
+							            			}else{
+												%>
+												<!-- status model starts here -->
+								         		<input type="password" class="form-control" placeholder="Confirm Password" name="comPass" value="<% if(request.getAttribute("passwordC") != null){ out.println(request.getAttribute("passwordC")); }%>" required>
+												<!-- status model ends here -->
+									
+					<%
+	            		}
+					%>
+								
+										</div>
                                     </div>
                                 </div>
-                                
-                                <div class="row mb-4">
-                                    <div class="col">
-                                        <p class=" text-center">Not your computer? Use Guest mode to sign in privately
-                                            <a href="#" class="text-warning ml-4">Learn more</a>
-                                        </p>
-                                    </div>
-                                </div>
-    							
-    							
-    
-                                 <div class="row mb-4">
-                                     <div class="col-3"></div>
-                                    <div class="col-3">
+
+                                 <div class="row mb-5 mt-3">
+                                     <div class="col-5"></div>
+                                    <div class="col-2">
                                         <div class="btn-group">
-                                            <input type="submit" class="form-control btn-primary" value="Register">
-                                        </div>
-                                    </div>
-                                    <div class="col-3">
-                                        <div class="btn-group">
-                                            <a href="login.html"><button type="button" class="form-control btn-success">Login</button></a>
+                                            <input type="submit" class="form-control btn-primary mr-3" value="Register">
+                                            <a href="login.jsp"><button type="button" class="form-control btn-success">Login</button></a>
                                         </div>
                                     </div>
                                  </div>   
                             </form>
-                        </div>
-                        <div class="col-1"></div>
+	            		
+                            
+                        	</div>
+                   		 </div>
                     </div>
                 </div>
             </div>

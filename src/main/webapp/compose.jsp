@@ -1,12 +1,3 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"
-    
-    import = "com.util.JDBCUtil"
-    import="java.sql.*"
-    import = "com.dto.UserDTO"
-    import = "com.service.Services"
-    
-    %>
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
 
@@ -20,24 +11,21 @@
     <meta name="description"
         content="Ample Admin Lite is powerful and clean admin dashboard template, inpired from Bootstrap Framework">
     <meta name="robots" content="noindex,nofollow">
-    <title>Inbox Page</title>
+    <title>Compose</title>
     <link rel="canonical" href="https://www.wrappixel.com/templates/ample-admin-lite/" />
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="plugins/images/favicon.png">
     <!-- Custom CSS -->
    <link href="css/style.min.css" rel="stylesheet">
-   <link href="styles.css" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
-
-<style>
-#row tr:hover {background-color: #ddd;cursor: pointer;}
-</style>
-
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 </head>
 
 <body>
@@ -50,7 +38,6 @@
 			}
 
 %>
-
 
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
@@ -79,7 +66,7 @@
                         <!-- Logo icon -->
                         <b class="logo-icon">
                             <!-- Dark Logo icon -->
-                            <img src="plugins/images/logo.jpg" alt="homepage" />
+                            <img src="plugins/images/logo-icon.png" alt="homepage" />
                         </b>
                         <!--End Logo icon -->
                         <!-- Logo text -->
@@ -129,7 +116,7 @@
                         <li>
                             <a class="profile-pic" href="#">
                                 <img src="plugins/images/users/varun.jpg" alt="user-img" width="36"
-                                    class="img-circle"><span class="text-white font-medium"> ${sessionEmail} </span></a>
+                                    class="img-circle"><span class="text-white font-medium">${sessionEmail}</span></a>
                         </li>
                         <!-- ============================================================== -->
                         <!-- User profile and search -->
@@ -152,7 +139,7 @@
                     <ul id="sidebarnav">
                         <!-- User Profile-->
                         <li class="sidebar-item pt-2">
-                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="profile.jsp"
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="profile.html"
                                 aria-expanded="false">
                                 <i class="fa fa-user" aria-hidden="true"></i>
                                 <span class="hide-menu">Profile</span>
@@ -161,7 +148,7 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="compose.jsp"
                                 aria-expanded="false">
-                                <i class="fa fa-plus-square" aria-hidden="true"></i>
+                               <i class="fa fa-plus-square" aria-hidden="true"></i>
                                 <span class="hide-menu">Compose</span>
                             </a>
                         </li>
@@ -182,7 +169,7 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="draft.jsp"
                                 aria-expanded="false">
-                                <i class="fa fa-file" aria-hidden="true"></i>
+                                 <i class="fa fa-file" aria-hidden="true"></i>
                                 <span class="hide-menu">Draft</span>
                             </a>
                         </li>
@@ -195,12 +182,9 @@
                         </li>
                         <li class="sidebar-item">  
                         	<form action="logout" method="post"> 
-                        	          
 	                            <input type="submit" value="Logout" class="btn btn-success ms-3 mt-4 text-white"  
 	                                aria-expanded="false">	                               
 	                               <i class="fa fa-sign-out" aria-hidden="true"></i>
-	                                
-                            
                             </form>
                         </li>
                         
@@ -221,23 +205,7 @@
             <!-- ============================================================== -->
             <!-- Bread crumb and right sidebar toggle -->
             <!-- ============================================================== -->
-            <div class="page-breadcrumb bg-white">
-                <div class="row align-items-center">
-                    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                        <h4 class="page-title">Inbox</h4>
-                    </div>
-                    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
-                        <div class="d-md-flex">
-                            <ol class="breadcrumb ms-auto">
-                                <li><a href="#" class="fw-normal">Dashboard</a></li>
-                            </ol>
-                            <a href="compose.jsp"
-                                class="btn btn-danger  d-none d-md-block pull-right ms-3 hidden-xs hidden-sm waves-effect waves-light text-white"><i class="fa fa-plus-square" aria-hidden="true"></i> &nbsp; Compose</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- /.col-lg-12 -->
-            </div>
+            
             <!-- ============================================================== -->
             <!-- End Bread crumb and right sidebar toggle -->
             <!-- ============================================================== -->
@@ -251,72 +219,54 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="white-box">
-                            <div class="table-responsive">
-                                <table class="table text-nowrap" id="table">
-
-                                    <tbody id="row">
-                                    <% 
-                                    Connection connection = null;
-                        			PreparedStatement prest = null;
-                        			String getUserSQL = "SELECT subject,SUBSTRING(message, 1, 120) AS message,to_char(time, 'dd-mm-yyyy HH12:MI') AS time , (SELECT users.first_name FROM users WHERE users.email = mails.receiver ) AS username, id,status FROM mails WHERE position = 'inbox' AND receiver=?";
-                        			UserDTO user = new UserDTO();
-                                    try{
-                                    	connection = JDBCUtil.getConnection();
-                        				prest = connection.prepareStatement(getUserSQL);
-                        				prest.setString(1, Services.session);
-                        				ResultSet rs = prest.executeQuery();
-                        				
-                        				while(rs.next()) {
-                        					
-
-                                    %>
-                                        <tr> 
-                                        	<td class="fw-bold "><%= rs.getString("id")%></td>
-                                        	<td class="fw-bold text-success"><%= rs.getString("username")%></td>
-                                            <td class="fw-bold "><%= rs.getString("message")%></td>
-                                            <td class="fw-bold text-warning"><%=rs.getString("status")%></td>
-                                            <td class="fw-bold text-primary"><%=rs.getString("time") %></td>
-                                            
-                                          
-                                            <td>
-                                            	<form action="trash" method="post">
-                                            	<button type="submit" class="btn  rounded " name="seen" value="<%= rs.getString("id") %>"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                                            	<button type="submit" class="btn rounded" name="trash" value="<%= rs.getString("id") %>"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                                            	</form>
-                                            </td>
-                                            
-                                         </tr>
-                                        
-                                        <%
-                        				}
-		                                    }catch(SQLException e) {
-		                                    	out.println(e.getMessage());
-		                            		}
-                                        %>
-
-                                    </tbody>
-                                </table> 
-                                
-                                <Script>
-                             // get selected row
-                                // display selected row data in text input
-                                
-                                var table = document.getElementById("table"),rIndex;
-                                
-                                for(var i = 1; i < table.rows.length; i++)
-                                {
-                                    table.rows[i].onclick = function()
-                                    {
-                                        rIndex = this.rowIndex;
-                                        console.log(rIndex);
-                                        
-                                        
-                                    };
-                                }
-                                </Script>
-                                
-                                
-                            </div>
+                        	<% if(request.getAttribute("status") == "Faild" ){ %>
+        					<script>
+        					//toastr.options.positionClass = 'toast-bottom-right';
+        						toastr.error('Email Sending Failed !')
+        					</script>
+        					<%}else if(request.getAttribute("status") == "Send" ){ %>
+        					<script>
+        					toastr.success('Email Sending Successfully !')
+        					</script>
+        					<%}else if(request.getAttribute("status") == "Draft"){ %>
+        					<script>
+        					toastr.success('Email Draft Sended !')
+        					</script>
+        					<%}%>
+        					
+                        	<form action="send" method="post">
+	                            <div class="form-group">
+	                                <div class="row has-validation mb-3">
+	                                 <%
+				            		if(request.getAttribute("status") == "Faild"){
+				            		%>
+				            			<input type="text" class="form-control is-invalid" placeholder="To" name="to" required value="<% if(request.getAttribute("status") == "Faild"){out.println(request.getAttribute("email"));} %>">
+				            		
+				            		<div class="invalid-feedback">
+								     <% out.print("Please Enter correct mail address"); %>
+								    </div>
+								    
+								    <% }else{ %>
+								    
+	                                    <input type="text" class="form-control" placeholder="To" name="to" required>
+	                                <%} %>
+	                                </div>
+	                                <div class="row mb-3">
+	                                    <input type="text" class="form-control" placeholder="Subject" name="subject" value = "<% if(request.getAttribute("status") == "Faild"){out.println(request.getAttribute("subject"));} %>">
+	                                </div>
+	                                <div class="row mb-3">
+	                                    <textarea class="form-control" rows="18" name="message"> <% if(request.getAttribute("status") == "Faild"){out.println(request.getAttribute("message"));} %></textarea>
+	                                </div>
+	                                <div class="row">
+	                                    <div class="col-10"></div>
+	                                    <div class="col-2 ml-5">
+	                                        <button type="submit" class="btn btn-secondary text-white" name="draft">Draft</button>
+	                                        <button type="submit" class="btn btn-success text-white" name="send">Send</button>
+	                                    </div>
+	                                    
+	                                </div>	                               
+	                            </div> 
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -337,7 +287,7 @@
             <!-- ============================================================== -->
             <!-- footer -->
             <!-- ============================================================== -->
-            <footer class="footer text-center"> 2021 © Ample Admin brought to you by <a
+            <footer class="footer text-center"> 2021 Â© Ample Admin brought to you by <a
                     href="https://www.wrappixel.com/">wrappixel.com</a>
             </footer>
             <!-- ============================================================== -->

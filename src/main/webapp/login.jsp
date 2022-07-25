@@ -1,4 +1,9 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"
+    
+    import = "com.dto.UserDTO"
+   	import = "com.controller.LoginServlet"
+ %>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -36,12 +41,49 @@
                 <div class="row mt-3">
                     <div class="col-1"></div>
                     <div class="col-10">
-                        <form action="login" method="post">
-                            <div class="form-group">
-                                <input type="email" class="form-control" placeholder="Enter Email Address" name="email" required>
+                        <form action="login" method="post" class="needs-validation">
+                            <div class="form-group has-validation">
+                          
+                                <%
+				            		if(request.getAttribute("email") != null){
+				            		%>
+					         		<!-- status model starts here -->
+					         		<input type="email" class="form-control is-invalid" placeholder="Enter Email Address" name="email" required>
+									<div class="invalid-feedback">
+								     <% out.print(request.getAttribute("email")); %>
+								    </div>
+									<!-- status model ends here -->
+									<%
+				            			}else{
+									%>
+									<!-- status model starts here -->
+					         		<input type="email" class="form-control" value="<% if(request.getAttribute("emailC") != null){ out.println(request.getAttribute("emailC")); }%>" placeholder="Enter Email Address" name="email" required>								
+									<!-- status model ends here -->
+									
+									<% }
+                                %>
                             </div>
-                            <div class="form-group mb-4">
-                                <input type="password" class="form-control" placeholder="Enter Password" name="pass" required>
+                            
+                            
+                            <div class="form-group has-validation mb-4">
+                                
+                                <%
+				            		if(request.getAttribute("password") != null){
+				            		%>
+					         		<!-- status model starts here -->
+					         		<input type="password" class="form-control is-invalid" placeholder="Enter Password" name="pass" required>
+									<div class="invalid-feedback">
+								     <% out.print(request.getAttribute("password")); %>
+								    </div>
+									<!-- status model ends here -->
+									<%
+				            			}else{
+									%>
+									<!-- status model starts here -->
+					         		<input type="password" class="form-control" placeholder="Enter Password" name="pass" required>					
+									<!-- status model ends here -->
+									
+									<% } %>
                             </div>
 
                             <div class="row mb-4">
@@ -58,7 +100,7 @@
                                  <div class="col-3"></div>
                                 <div class="col-3">
                                     <div class="btn-group">
-                                        <a href="register.html"><button type="button" class="form-control btn-primary">Sign up</button></a>
+                                        <a href="register.jsp"><button type="button" class="form-control btn-primary">Sign up</button></a>
                                     </div>
                                 </div>
                                 <div class="col-3">
@@ -70,6 +112,7 @@
                         </form>
                     </div>
                     <div class="col-1"></div>
+    
                 </div>
             </div>
          </div>

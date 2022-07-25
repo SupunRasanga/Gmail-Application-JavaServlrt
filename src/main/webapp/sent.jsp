@@ -20,7 +20,7 @@
     <meta name="description"
         content="Ample Admin Lite is powerful and clean admin dashboard template, inpired from Bootstrap Framework">
     <meta name="robots" content="noindex,nofollow">
-    <title>Inbox Page</title>
+    <title>Sent Page</title>
     <link rel="canonical" href="https://www.wrappixel.com/templates/ample-admin-lite/" />
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="plugins/images/favicon.png">
@@ -33,11 +33,6 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
-
-<style>
-#row tr:hover {background-color: #ddd;cursor: pointer;}
-</style>
-
 </head>
 
 <body>
@@ -46,7 +41,7 @@
 		response.setHeader("Cache-Control","no-cache, no-store, must-revalidate");
 	 
 			if(session.getAttribute("sessionEmail")==null){
-				response.sendRedirect("login.jsp");
+				response.sendRedirect("login.html");
 			}
 
 %>
@@ -79,7 +74,7 @@
                         <!-- Logo icon -->
                         <b class="logo-icon">
                             <!-- Dark Logo icon -->
-                            <img src="plugins/images/logo.jpg" alt="homepage" />
+                            <img src="plugins/images/logo-icon.png" alt="homepage" />
                         </b>
                         <!--End Logo icon -->
                         <!-- Logo text -->
@@ -224,12 +219,11 @@
             <div class="page-breadcrumb bg-white">
                 <div class="row align-items-center">
                     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                        <h4 class="page-title">Inbox</h4>
+                        <h4 class="page-title">Sent</h4>
                     </div>
                     <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
                         <div class="d-md-flex">
-                            <ol class="breadcrumb ms-auto">
-                                <li><a href="#" class="fw-normal">Dashboard</a></li>
+                        	 <ol class="breadcrumb ms-auto">
                             </ol>
                             <a href="compose.jsp"
                                 class="btn btn-danger  d-none d-md-block pull-right ms-3 hidden-xs hidden-sm waves-effect waves-light text-white"><i class="fa fa-plus-square" aria-hidden="true"></i> &nbsp; Compose</a>
@@ -258,7 +252,7 @@
                                     <% 
                                     Connection connection = null;
                         			PreparedStatement prest = null;
-                        			String getUserSQL = "SELECT subject,SUBSTRING(message, 1, 120) AS message,to_char(time, 'dd-mm-yyyy HH12:MI') AS time , (SELECT users.first_name FROM users WHERE users.email = mails.receiver ) AS username, id,status FROM mails WHERE position = 'inbox' AND receiver=?";
+                        			String getUserSQL = "SELECT subject,SUBSTRING(message, 1, 120) AS message,to_char(time, 'dd-mm-yyyy HH12:MI') AS time , (SELECT users.first_name FROM users WHERE users.email = mails.receiver ) AS username, id,status FROM mails WHERE message_type = 'sent' AND sender=?";
                         			UserDTO user = new UserDTO();
                                     try{
                                     	connection = JDBCUtil.getConnection();
@@ -281,7 +275,7 @@
                                             <td>
                                             	<form action="trash" method="post">
                                             	<button type="submit" class="btn  rounded " name="seen" value="<%= rs.getString("id") %>"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                                            	<button type="submit" class="btn rounded" name="trash" value="<%= rs.getString("id") %>"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                            	<button type="submit" class="btn rounded" name="trashSender" value="<%= rs.getString("id") %>"><i class="fa fa-trash" aria-hidden="true"></i></button>
                                             	</form>
                                             </td>
                                             
@@ -293,11 +287,11 @@
 		                                    	out.println(e.getMessage());
 		                            		}
                                         %>
-
+			
                                     </tbody>
-                                </table> 
+                                </table>
                                 
-                                <Script>
+                                 <Script>
                              // get selected row
                                 // display selected row data in text input
                                 
@@ -314,6 +308,7 @@
                                     };
                                 }
                                 </Script>
+                                
                                 
                                 
                             </div>

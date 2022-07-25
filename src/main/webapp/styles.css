@@ -2,3 +2,16 @@
     margin-top: 15%;
 }
 
+ .removeSubmitStyles{
+ 	background: red;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+ }
+
+a{
+	text-decoration: none;
+}

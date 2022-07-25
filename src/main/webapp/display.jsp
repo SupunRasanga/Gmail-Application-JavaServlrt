@@ -2,9 +2,10 @@
     pageEncoding="ISO-8859-1"
     
     import = "com.util.JDBCUtil"
-    import="java.sql.*"
-    import = "com.dto.UserDTO"
+    import = "java.sql.*"
     import = "com.service.Services"
+    import = "com.dto.UserDTO"
+    
     
     %>
 <!DOCTYPE html>
@@ -20,29 +21,22 @@
     <meta name="description"
         content="Ample Admin Lite is powerful and clean admin dashboard template, inpired from Bootstrap Framework">
     <meta name="robots" content="noindex,nofollow">
-    <title>Inbox Page</title>
+    <title>Compose</title>
     <link rel="canonical" href="https://www.wrappixel.com/templates/ample-admin-lite/" />
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="plugins/images/favicon.png">
     <!-- Custom CSS -->
    <link href="css/style.min.css" rel="stylesheet">
-   <link href="styles.css" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
-
-<style>
-#row tr:hover {background-color: #ddd;cursor: pointer;}
-</style>
-
 </head>
 
 <body>
-
-	<%
+<%
 		response.setHeader("Cache-Control","no-cache, no-store, must-revalidate");
 	 
 			if(session.getAttribute("sessionEmail")==null){
@@ -50,8 +44,6 @@
 			}
 
 %>
-
-
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
     <!-- ============================================================== -->
@@ -79,7 +71,7 @@
                         <!-- Logo icon -->
                         <b class="logo-icon">
                             <!-- Dark Logo icon -->
-                            <img src="plugins/images/logo.jpg" alt="homepage" />
+                            <img src="plugins/images/logo-icon.png" alt="homepage" />
                         </b>
                         <!--End Logo icon -->
                         <!-- Logo text -->
@@ -129,7 +121,7 @@
                         <li>
                             <a class="profile-pic" href="#">
                                 <img src="plugins/images/users/varun.jpg" alt="user-img" width="36"
-                                    class="img-circle"><span class="text-white font-medium"> ${sessionEmail} </span></a>
+                                    class="img-circle"><span class="text-white font-medium">${sessionEmail}</span></a>
                         </li>
                         <!-- ============================================================== -->
                         <!-- User profile and search -->
@@ -161,7 +153,7 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="compose.jsp"
                                 aria-expanded="false">
-                                <i class="fa fa-plus-square" aria-hidden="true"></i>
+                               <i class="fa fa-plus-square" aria-hidden="true"></i>
                                 <span class="hide-menu">Compose</span>
                             </a>
                         </li>
@@ -182,7 +174,7 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link" href="draft.jsp"
                                 aria-expanded="false">
-                                <i class="fa fa-file" aria-hidden="true"></i>
+                                 <i class="fa fa-file" aria-hidden="true"></i>
                                 <span class="hide-menu">Draft</span>
                             </a>
                         </li>
@@ -195,12 +187,9 @@
                         </li>
                         <li class="sidebar-item">  
                         	<form action="logout" method="post"> 
-                        	          
 	                            <input type="submit" value="Logout" class="btn btn-success ms-3 mt-4 text-white"  
 	                                aria-expanded="false">	                               
 	                               <i class="fa fa-sign-out" aria-hidden="true"></i>
-	                                
-                            
                             </form>
                         </li>
                         
@@ -221,23 +210,7 @@
             <!-- ============================================================== -->
             <!-- Bread crumb and right sidebar toggle -->
             <!-- ============================================================== -->
-            <div class="page-breadcrumb bg-white">
-                <div class="row align-items-center">
-                    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                        <h4 class="page-title">Inbox</h4>
-                    </div>
-                    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
-                        <div class="d-md-flex">
-                            <ol class="breadcrumb ms-auto">
-                                <li><a href="#" class="fw-normal">Dashboard</a></li>
-                            </ol>
-                            <a href="compose.jsp"
-                                class="btn btn-danger  d-none d-md-block pull-right ms-3 hidden-xs hidden-sm waves-effect waves-light text-white"><i class="fa fa-plus-square" aria-hidden="true"></i> &nbsp; Compose</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- /.col-lg-12 -->
-            </div>
+            
             <!-- ============================================================== -->
             <!-- End Bread crumb and right sidebar toggle -->
             <!-- ============================================================== -->
@@ -251,73 +224,42 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="white-box">
-                            <div class="table-responsive">
-                                <table class="table text-nowrap" id="table">
-
-                                    <tbody id="row">
-                                    <% 
-                                    Connection connection = null;
-                        			PreparedStatement prest = null;
-                        			String getUserSQL = "SELECT subject,SUBSTRING(message, 1, 120) AS message,to_char(time, 'dd-mm-yyyy HH12:MI') AS time , (SELECT users.first_name FROM users WHERE users.email = mails.receiver ) AS username, id,status FROM mails WHERE position = 'inbox' AND receiver=?";
-                        			UserDTO user = new UserDTO();
-                                    try{
-                                    	connection = JDBCUtil.getConnection();
-                        				prest = connection.prepareStatement(getUserSQL);
-                        				prest.setString(1, Services.session);
-                        				ResultSet rs = prest.executeQuery();
-                        				
-                        				while(rs.next()) {
-                        					
-
-                                    %>
-                                        <tr> 
-                                        	<td class="fw-bold "><%= rs.getString("id")%></td>
-                                        	<td class="fw-bold text-success"><%= rs.getString("username")%></td>
-                                            <td class="fw-bold "><%= rs.getString("message")%></td>
-                                            <td class="fw-bold text-warning"><%=rs.getString("status")%></td>
-                                            <td class="fw-bold text-primary"><%=rs.getString("time") %></td>
-                                            
-                                          
-                                            <td>
-                                            	<form action="trash" method="post">
-                                            	<button type="submit" class="btn  rounded " name="seen" value="<%= rs.getString("id") %>"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                                            	<button type="submit" class="btn rounded" name="trash" value="<%= rs.getString("id") %>"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                                            	</form>
-                                            </td>
-                                            
-                                         </tr>
-                                        
-                                        <%
-                        				}
-		                                    }catch(SQLException e) {
-		                                    	out.println(e.getMessage());
-		                            		}
-                                        %>
-
-                                    </tbody>
-                                </table> 
-                                
-                                <Script>
-                             // get selected row
-                                // display selected row data in text input
-                                
-                                var table = document.getElementById("table"),rIndex;
-                                
-                                for(var i = 1; i < table.rows.length; i++)
-                                {
-                                    table.rows[i].onclick = function()
-                                    {
-                                        rIndex = this.rowIndex;
-                                        console.log(rIndex);
-                                        
-                                        
-                                    };
-                                }
-                                </Script>
-                                
-                                
-                            </div>
-                        </div>
+                         	 <div class="form-group">
+                         	 	<% 
+                         	 	try{
+                         	 		UserDTO ud = Services.seenEmail();
+                         	 		
+                         	 	%>
+                         	 		
+	                                <div class="row mb-3">
+	                                	<div class="col-sm-6">
+	                                    	<input type="text" class="form-control" placeholder="To" name="to" value="<% out.println("Sender : "+ud.getSender()); %>" readonly>
+	                                	</div>
+	                                	<div class="col-sm-6">
+	                                    	<input type="text" class="form-control" placeholder="To" name="to" value="<% out.println("Time : "+ud.getTime()); %>" readonly>
+	                                	</div>
+	                                </div>
+	                                <div class="row mb-3">
+	                                    <input type="text" class="form-control" placeholder="Subject" name="subject" value="<% out.println("Subject : "+ud.getSubject()); %>" readonly>
+	                                </div>
+	                                <div class="row mb-3">
+	                                    <textarea class="form-control" rows="18" name="message" readonly><% out.println(ud.getMessage()); %></textarea>
+	                                </div>
+	                                
+	                                <div class="row text-center">
+	                                   <form action="send" method="post">
+                                          <button type="submit" class="btn  rounded btn-primary" name="reply" >Reply</button> &nbsp;
+                                          <button type="submit" class="btn rounded btn-secondary text-light" name="forward" >Forward</button>
+                                        </form>
+	                                </div>
+	                                
+	                            </div> 
+	                            <% 
+	                            }catch(SQLException e){
+	                            	out.println(e.getMessage());
+	                            }
+                         	 	 %>
+                         </div>
                     </div>
                 </div>
                 <!-- ============================================================== -->
